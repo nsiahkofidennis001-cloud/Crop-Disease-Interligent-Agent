@@ -1,0 +1,7 @@
+torch
+torchvision
+Pillow
+gradio
+matplotlib
+scikit-learn
+numpy

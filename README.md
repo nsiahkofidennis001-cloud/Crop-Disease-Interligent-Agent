@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌿 Crop Disease Intelligent Agent
 
 An intelligent agent system for detecting and diagnosing crop diseases from leaf images using deep learning (ResNet-18 transfer learning), structured as a **Perception → Decision → Action** pipeline with a Gradio web interface.
@@ -84,3 +85,6 @@ Open **http://localhost:7860** in your browser, upload a leaf image, and get an 
 ## License
 
 MIT
+=======
+# Crop-Disease-Interligent-Agent
+>>>>>>> a53f8f90b5f55dfea7615b700988d07c73605029

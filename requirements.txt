@@ -5,3 +5,4 @@ gradio
 matplotlib
 scikit-learn
 numpy
+colorama

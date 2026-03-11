@@ -44,18 +44,18 @@ def get_agent() -> CropDiseaseAgent:
 def predict(image):
     """Called by Gradio when a user uploads an image."""
     if image is None:
-        return "⚠️ Please upload an image.", "", ""
+        return "Please upload an image.", "", ""
 
     try:
         result = get_agent().diagnose(image)
     except FileNotFoundError as e:
         return (
-            f"⚠️ Model not found: {e}\n\n"
+            f" Model not found: {e}\n\n"
             "Please train the model first with `python train.py`.",
             "", "",
         )
     except Exception as e:
-        return f"❌ Error during diagnosis: {e}", "", ""
+        return f" Error during diagnosis: {e}", "", ""
 
     # Format top predictions
     top_preds = "\n".join(
@@ -67,10 +67,10 @@ def predict(image):
     confidence_display = f"{result.confidence:.2%}"
 
     diagnosis_text = (
-        f"🌿 **Disease:** {disease_display}\n\n"
-        f"📊 **Confidence:** {confidence_display}\n\n"
-        f"🏥 **Treatment:**\n{result.treatment}\n\n"
-        f"📋 **Top Predictions:**\n{top_preds}"
+        f" **Disease:** {disease_display}\n\n"
+        f" **Confidence:** {confidence_display}\n\n"
+        f" **Treatment:**\n{result.treatment}\n\n"
+        f" **Top Predictions:**\n{top_preds}"
     )
 
     return diagnosis_text
@@ -83,12 +83,12 @@ def predict(image):
 def build_app() -> gr.Blocks:
     """Construct the Gradio Blocks app."""
     with gr.Blocks(
-        title="🌿 Crop Disease Intelligent Agent",
+        title=" Crop Disease Intelligent Agent",
         theme=gr.themes.Soft(primary_hue="green"),
     ) as app:
         gr.Markdown(
             """
-            # 🌿 Crop Disease Intelligent Agent
+            #  Crop Disease Intelligent Agent
             Upload a photo of a crop leaf and get an instant AI-powered diagnosis
             with treatment recommendations.
             """
@@ -116,7 +116,7 @@ def build_app() -> gr.Blocks:
             on crop disease images.  It follows a *Perception → Decision* pipeline to
             identify the disease and recommend a treatment.
 
-            ⚠️ *This tool is for educational purposes. Always consult an agricultural
+            *This tool is for educational purposes. Always consult an agricultural
             expert for critical decisions.*
             """
         )

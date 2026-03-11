@@ -35,7 +35,7 @@ def download_from_kaggle(dest_dir: str = "dataset"):
     try:
         from kaggle.api.kaggle_api_extended import KaggleApi
     except ImportError:
-        print("❌ kaggle package not installed. Run:  pip install kaggle")
+        print(" kaggle package not installed. Run:  pip install kaggle")
         return
 
     api = KaggleApi()
@@ -44,9 +44,9 @@ def download_from_kaggle(dest_dir: str = "dataset"):
     dataset_slug = "vipoooool/new-plant-diseases-dataset"
     download_path = os.path.join(dest_dir, "_raw")
 
-    print(f"⬇️  Downloading '{dataset_slug}' …")
+    print(f" Downloading '{dataset_slug}' …")
     api.dataset_download_files(dataset_slug, path=download_path, unzip=True)
-    print("✅ Download complete.")
+    print(" Download complete.")
 
     # The dataset extracts as:
     #   _raw/New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)/train/
@@ -64,7 +64,7 @@ def download_from_kaggle(dest_dir: str = "dataset"):
             break
 
     if not raw_train or not raw_valid:
-        print("⚠️  Could not locate train/valid inside the download.")
+        print(" Could not locate train/valid inside the download.")
         print(f"   Please check {download_path} manually.")
         return
 
@@ -88,7 +88,7 @@ def download_from_kaggle(dest_dir: str = "dataset"):
     train_count = sum(len(os.listdir(os.path.join(final_train, c))) for c in train_classes)
     test_count = sum(len(os.listdir(os.path.join(final_test, c))) for c in test_classes)
 
-    print(f"\n📂 Dataset ready!")
+    print(f"\n Dataset ready!")
     print(f"   Train: {train_count:,} images across {len(train_classes)} classes")
     print(f"   Test:  {test_count:,} images across {len(test_classes)} classes")
     print(f"   Path:  {os.path.abspath(dest_dir)}")
@@ -122,7 +122,7 @@ def split_dataset(source_dir: str, dest_dir: str = "dataset", ratio: float = 0.8
     ])
 
     if not classes:
-        print(f"❌ No class sub-folders found in {source_dir}")
+        print(f" No class sub-folders found in {source_dir}")
         return
 
     total_train = 0
@@ -155,7 +155,7 @@ def split_dataset(source_dir: str, dest_dir: str = "dataset", ratio: float = 0.8
         total_test += len(test_imgs)
         print(f"  {cls:<45s}  train: {len(train_imgs):>5d}  test: {len(test_imgs):>5d}")
 
-    print(f"\n📂 Split complete!")
+    print(f"\n Split complete!")
     print(f"   Train: {total_train:,} images")
     print(f"   Test:  {total_test:,} images")
     print(f"   Path:  {os.path.abspath(dest_dir)}")
@@ -185,7 +185,7 @@ def main():
 
     if not args.download and not args.split:
         parser.print_help()
-        print("\n⚠️  Specify --download or --split (or both).")
+        print("\n Specify --download or --split (or both).")
         return
 
     if args.download:
@@ -193,7 +193,7 @@ def main():
 
     if args.split:
         if not args.source:
-            print("❌ --split requires --source <path_to_class_folders>")
+            print(" --split requires --source <path_to_class_folders>")
             return
         split_dataset(args.source, args.dest, args.ratio)
 

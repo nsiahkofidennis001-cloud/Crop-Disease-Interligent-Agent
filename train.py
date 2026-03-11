@@ -192,10 +192,10 @@ def main():
     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()),
                            lr=args.lr)
 
-    # ── Train ───────────────────────────────────────────────
+    # Train 
     model = train_model(model, dataloaders, criterion, optimizer, device, args.epochs)
 
-    # ── Save ────────────────────────────────────────────────
+    # ── Save 
     os.makedirs(args.output_dir, exist_ok=True)
     model_path = os.path.join(args.output_dir, "crop_disease_model.pth")
     torch.save(model.state_dict(), model_path)

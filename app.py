@@ -113,14 +113,14 @@ def build_app() -> gr.Blocks:
     ) as app:
         gr.Markdown(
             """
-            # 🌿 Crop Disease Intelligent Agent
+            #  Crop Disease Intelligent Agent
             Upload a photo of a crop leaf and get an instant AI-powered diagnosis
             with treatment recommendations.
             """
         )
         
         if USING_SYNTHETIC:
-            gr.Info("🚀 Running in **Synthetic Mode** (Demonstration). Deep learning libraries (Torch) are currently unavailable in this environment, but you can still test the agent logic and UI flow.")
+            gr.Info(" Running in **Synthetic Mode** (Demonstration). Deep learning libraries (Torch) are currently unavailable in this environment, but you can still test the agent logic and UI flow.")
 
         with gr.Row():
             with gr.Column(scale=1):

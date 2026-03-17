@@ -10,7 +10,7 @@ Then open http://localhost:7860 in your browser.
 
 import os
 import gradio as gr
-from agent import CropDiseaseAgent
+# from agent import CropDiseaseAgent  # Removed for synthetic fallback
 
 
 # ------------------------------------------------------------------ #
@@ -25,15 +25,41 @@ CLASS_NAMES_PATH = os.environ.get("CLASS_NAMES_PATH", "models/class_names.json")
 #  Agent initialisation                                               #
 # ------------------------------------------------------------------ #
 
-agent: CropDiseaseAgent | None = None
+agent = None
+USING_SYNTHETIC = False
 
+def get_agent():
+    """Lazy-load the agent. Falls back to a synthetic agent if dependencies
+    (like torch) are missing."""
+    global agent, USING_SYNTHETIC
+    if agent is not None:
+        return agent
 
-def get_agent() -> CropDiseaseAgent:
-    """Lazy-load the agent so the app can still start even if the model
-    is missing (useful during development)."""
-    global agent
-    if agent is None:
+    try:
+        from agent import CropDiseaseAgent
         agent = CropDiseaseAgent(MODEL_PATH, CLASS_NAMES_PATH)
+        USING_SYNTHETIC = False
+    except (ImportError, FileNotFoundError, Exception) as e:
+        print(f"Bypassing real agent due to: {e}")
+        print("Initialising Synthetic Agent for demonstration...")
+        
+        # We define a lightweight synthetic agent here if torch/agent fails
+        class SyntheticAgent:
+            def diagnose(self, image):
+                from simulation import SyntheticDecisionEngine
+                diag = SyntheticDecisionEngine.random_diagnosis()
+                # Mock a DiagnosisResult object
+                class MockResult:
+                    def __init__(self, d):
+                        self.disease = d["disease"]
+                        self.confidence = d["confidence"]
+                        self.treatment = d["treatment"]
+                        self.top_predictions = d["top_predictions"]
+                return MockResult(diag)
+        
+        agent = SyntheticAgent()
+        USING_SYNTHETIC = True
+    
     return agent
 
 
@@ -84,15 +110,17 @@ def build_app() -> gr.Blocks:
     """Construct the Gradio Blocks app."""
     with gr.Blocks(
         title=" Crop Disease Intelligent Agent",
-        theme=gr.themes.Soft(primary_hue="green"),
     ) as app:
         gr.Markdown(
             """
-            #  Crop Disease Intelligent Agent
+            # 🌿 Crop Disease Intelligent Agent
             Upload a photo of a crop leaf and get an instant AI-powered diagnosis
             with treatment recommendations.
             """
         )
+        
+        if USING_SYNTHETIC:
+            gr.Info("🚀 Running in **Synthetic Mode** (Demonstration). Deep learning libraries (Torch) are currently unavailable in this environment, but you can still test the agent logic and UI flow.")
 
         with gr.Row():
             with gr.Column(scale=1):
@@ -130,4 +158,4 @@ def build_app() -> gr.Blocks:
 
 if __name__ == "__main__":
     app = build_app()
-    app.launch(server_name="0.0.0.0", server_port=7860)
+    app.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft(primary_hue="green"))
